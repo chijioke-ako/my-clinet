@@ -1,0 +1,18 @@
+.our-Term-background {
+    background-image: url("../../../assets/018.jpg");
+    height: 300px;
+}
+
+.our-banner {
+    margin-top: 100px;
+    background-color: #e1f0ff;
+    display: inline-block;
+    padding: 5px 30px 5px 15px;
+    margin-bottom: 1px;
+}
+
+.the-team-banner {
+    background-color: rgba(0, 102, 204, 0.5);
+    display: inline-block;
+    padding: 5px 30px 5px 15px;
+}

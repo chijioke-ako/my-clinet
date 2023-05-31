@@ -1,0 +1,21 @@
+.about-us-background {
+    background-image: url("../../../assets/a016.png") ;
+    background-repeat: no-repeat;
+    height: 300px;   
+}
+
+
+.jumbotron-banner {      
+    padding-top: 69px;
+    padding-bottom: 48px;
+}
+
+.about-title{
+ margin-bottom: 15px;
+ font-size: 16px;
+ color: white;
+ margin:  5rem 13rem 10px;           
+ font-weight: 700;
+ position: absolute;
+
+}
