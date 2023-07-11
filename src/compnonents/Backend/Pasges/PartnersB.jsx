@@ -1,6 +1,8 @@
 import { Container, Breadcrumb } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import PartenrList from './PartenrList';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 const style = {
   marginTop: '20px',
@@ -9,6 +11,17 @@ const style = {
 };
 
 function PartnersB() {
+  const navigate = useNavigate();
+
+  const userSiginin = useSelector((state) => state.userSignin);
+  const { userInfo } = userSiginin;
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigate('/signin');
+    }
+  }, []);
+
   return (
     <>
       <Container

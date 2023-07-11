@@ -230,7 +230,7 @@ const Home = () => {
         <Proudction />
       </section>
 
-      <section style={{ marginTop: '6rem', marginBottom: '6rem' }}>
+      <section style={{ marginTop: '-2rem', marginBottom: '2rem' }}>
         <LastestPublication />
       </section>
     </>

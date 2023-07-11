@@ -5,14 +5,12 @@ import Tweets from '../../Helper/Tweets';
 import PublicationDatabase from '../../Backend/Pasges/PublicationDatabase';
 
 const style = {
-  // padding: '5px 0 5px 10px',
   fontSize: '24px',
   marginTop: '-15px',
   borderLeft: 'solid 12px #E1F0FF',
-  fontWeight: 'bold',
   borderBottom: 'solid thin #E1F0FF',
   fontFamily: ['Miriam Libre '].join(','),
-  width: '82%',
+  width: '73%',
 };
 
 function AboutUs() {
@@ -27,8 +25,14 @@ function AboutUs() {
               fontFamily: ['Miriam Libre '].join(','),
             }}
           >
-            <div style={{ fontWeight: 'bold', fontSize: '2rem' }}>About us</div>
-            One Company. One Team. One Goal.
+            <div
+              style={{ fontWeight: 'bold', fontSize: '46px', color: '#ffff' }}
+            >
+              About us
+            </div>
+            <p style={{ fontSize: '29px', color: '#ffff' }}>
+              One Company. One Team. One Goal.
+            </p>
           </div>
         </div>
       </div>
@@ -44,7 +48,6 @@ function AboutUs() {
                 paddingTop: '4px',
                 paddingLeft: '12px',
                 height: '2rem',
-                // paddingBottom: '1px',
               }}
             >
               <div>
@@ -131,7 +134,11 @@ function AboutUs() {
             </div>
           </Col>
           <Col sm={4}>
-            <div style={style}>Latest Publication</div>
+            <div style={style}>
+              <h4 style={{ marginLeft: '1rem', fontWeight: 'bold' }}>
+                Latest Publication
+              </h4>
+            </div>
 
             <div style={{ width: '86%', marginLeft: '29px' }}>
               <PublicationDatabase />

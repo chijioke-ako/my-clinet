@@ -1,4 +1,4 @@
-.wrapper{
+/* .wrapper{
     height: 100vh;
 }
 
@@ -8,4 +8,47 @@
     padding: 20px;
     border-radius: 5px;
     background-color: rgb(238, 241, 243);
+} */
+
+
+button {
+    background-color: #f8f8f8;
+    cursor: pointer;
+}
+
+.primary {
+ background-color: #6969ee;
+ font-size: larger;
+ color: white;
+}
+
+.form{
+    max-width: 60rem;
+    margin: 0 auto;
+}
+
+.form > div{
+    display: flex;
+    flex-direction: column;
+    margin: 1rem;
+}
+
+.form label{
+    margin: 1rem 0;
+    font-weight: bold;
+}
+
+input,
+select,
+textarea,
+button {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: #a4a4a4 solid;
+    font-size: 1.6rem;
+    font-family: Arial, Helvetica, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    cursor: pointer;
+    background-color: #f8f8f8;
 }

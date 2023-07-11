@@ -4,7 +4,6 @@ import Api from '../../Helper/Api';
 import fileDownload from 'js-file-download';
 import {
   FaEye,
-  FaPen,
   FaTrash,
   FaLongArrowAltDown,
   FaCaretDown,
@@ -21,21 +20,28 @@ import {
   useTable,
 } from 'react-table';
 import GlobalFilter from '../../Helper/GlobalFilter';
+import parse from 'html-react-parser';
+import moment from 'moment';
+import LoadingBox from '../../Helper/LoadingBox';
+import MessageBox from '../../Helper/MessageBox';
 
 function ResumesList() {
+  const navigate = useNavigate();
   const [data, setData] = useState([]);
-  const history = useNavigate();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const getResumes = async () => {
     try {
+      setLoading(true);
       const response = await Api.get('/resume');
-      setLoading(false);
+
       setData(response.data);
       setLoading(false);
     } catch (err) {
       // not in 200 response range
-      toast.error(err.message);
+      setError(err.message);
+      setLoading(false);
     }
   };
 
@@ -53,6 +59,7 @@ function ResumesList() {
           })
         );
         toast.success('resumes was successfully deleted ! ');
+        getResumes();
       } catch (err) {
         toast.error(err);
       }
@@ -77,11 +84,19 @@ function ResumesList() {
       {
         Header: 'Cover Letter',
         accessor: 'coverletter', // accessor is the "key" in the data
+        Cell: ({ value }) => {
+          return parse(value);
+        },
       },
       {
         Header: 'Date submitted	',
         accessor: 'datesubmitted', // accessor is the "key" in the data
+        Cell: ({ value }) => {
+          return moment(value).format('MMMM Do YYYY, h:mm:ss a');
+          // moment(value).format('MMMM Do YYYY, h:mm:ss a');
+        },
       },
+
       {
         Header: ' Email',
         accessor: 'email',
@@ -163,7 +178,7 @@ function ResumesList() {
   );
 
   const handlerView = async (id) => {
-    history(`/HomeB/users/${id}`);
+    navigate(`/HomeB/users/${id}`);
   };
 
   const { pageIndex, pageSize } = state;
@@ -173,9 +188,14 @@ function ResumesList() {
     <>
       <Container>
         {loading ? (
-          <span>Loading Partners </span>
+          <LoadingBox></LoadingBox>
+        ) : error ? (
+          <MessageBox>
+            <h4> No currently resume available !</h4>
+            {error}
+          </MessageBox>
         ) : (
-          <>
+          <Container>
             <div>
               <div style={{ textAlign: 'end' }}>
                 <GlobalFilter
@@ -253,54 +273,58 @@ function ResumesList() {
                 })}
               </tbody>
             </Table>
-          </>
-        )}
-        <div>
-          <strong>
-            <span>
-              {' '}
-              page {pageIndex + 1} of {pageOptions.length}
-            </span>{' '}
-            <span>
-              | Go to Page:{' '}
-              <input
-                type="number"
-                defaultValue={pageIndex + 1}
-                onChange={(e) => {
-                  const pageNumber = e.target.value
-                    ? Number(e.target.value) - 1
-                    : 0;
-                  gotoPage(pageNumber);
-                }}
-                style={{ width: '50px', marginRight: '2px' }}
-              />
-            </span>
-          </strong>
 
-          <Button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-            {'<<'}
-          </Button>
-          <Button
-            style={{}}
-            variant="primary"
-            onClick={() => previousPage()}
-            disabled={!canPreviousPage}
-          >
-            Previous
-          </Button>
-          <Button
-            style={{ marginLeft: '1px' }}
-            variant="primary"
-            onClick={() => nextPage()}
-            disabled={!canNextPage}
-          >
-            Next
-          </Button>
-          <Button onClick={() => gotoPage(1)} disabled={!canNextPage}>
-            {'>>'}
-          </Button>
-        </div>
+            <div>
+              <strong>
+                <span>
+                  {' '}
+                  page {pageIndex + 1} of {pageOptions.length}
+                </span>{' '}
+                <span>
+                  | Go to Page:{' '}
+                  <input
+                    type="number"
+                    className="form-control"
+                    defaultValue={pageIndex + 1}
+                    onChange={(e) => {
+                      const pageNumber = e.target.value
+                        ? Number(e.target.value) - 1
+                        : 0;
+                      gotoPage(pageNumber);
+                    }}
+                    style={{ width: '50px', marginRight: '2px' }}
+                  />
+                </span>
+              </strong>
+
+              <Button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+                {'<<'}
+              </Button>
+              <Button
+                style={{}}
+                variant="primary"
+                onClick={() => previousPage()}
+                disabled={!canPreviousPage}
+              >
+                Previous
+              </Button>
+              <Button
+                style={{ marginLeft: '1px' }}
+                variant="primary"
+                onClick={() => nextPage()}
+                disabled={!canNextPage}
+              >
+                Next
+              </Button>
+              <Button onClick={() => gotoPage(1)} disabled={!canNextPage}>
+                {'>>'}
+              </Button>
+            </div>
+          </Container>
+        )}
       </Container>
+
+      <br />
     </>
   );
 }

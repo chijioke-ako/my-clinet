@@ -1,6 +1,5 @@
 import './App.css';
-import { useEffect, useState } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -19,7 +18,7 @@ import Pcms from './compnonents/Pages/Pcms';
 import Software from './compnonents/Pages/Software';
 import EBusness from './compnonents/Pages/EBusness';
 import Gis from './compnonents/Pages/Gis';
-import Coustom from './compnonents/Pages/Coustom';
+// import Coustom from './compnonents/Pages/Coustom';
 import ChiemekaNgwu from './compnonents/Pages/ChiemekaNgwu';
 import OluwoleAdetiba from './compnonents/Pages/OluwoleAetiba';
 import PaulIke from './compnonents/Pages/PaulIke';
@@ -41,27 +40,9 @@ import PublicationView from './compnonents/Backend/Pasges/PublicationView';
 import ViewUsers from './compnonents/Backend/Pasges/ViewUsers';
 import UpdatePage from './compnonents/Backend/Pasges/UpdatePage';
 import UsersUpdate from './compnonents/Backend/Pasges/UsersUpdate';
-import Api from './compnonents/Helper/Api';
+import PrivateRouter from './compnonents/Helper/PrivateRouter';
 
-function App(props) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const setAuth = () => {
-    setIsAuthenticated((current) => !current);
-    // console.log(isAuthenticated); // is false
-  };
-
-  useEffect(() => {
-    Api.get('/verify', {
-      headers: {
-        authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    }).then((response) => {
-      if (response.data.loggedIn === true) {
-        setAuth(response.data.loggedIn);
-      }
-    });
-  }, []);
+function App() {
   return (
     <div className="App">
       <ToastContainer />
@@ -70,16 +51,7 @@ function App(props) {
           <Route index element={<Home />} />
           <Route path="ContactUs" element={<Contact />} />
           <Route path="Publictions" element={<Publications />} />
-          <Route path="About" element={<AboutUs />} />
-          <Route path="OurTeam" element={<OurTerms />} />
-          <Route path="Partners" element={<Partners />} />
-          <Route path="Carrers" element={<Careers />} />
-          <Route path="OpenbravoERP" element={<OpenbravoERP />} />
-          <Route path="Pcms" element={<Pcms />} />
-          <Route path="Software development" element={<Software />} />
-          <Route path="E Business & IT Consulting" element={<EBusness />} />
-          <Route path="GIS Techology & Property Valuation" element={<Gis />} />
-          <Route path="CustomerZone" element={<Coustom />} />
+
           <Route path="Chiemeka_Ngwu" element={<ChiemekaNgwu />} />
           <Route path="Oluwole_Adetiba" element={<OluwoleAdetiba />} />
           <Route path="Paul_Ike" element={<PaulIke />} />
@@ -91,161 +63,50 @@ function App(props) {
             element={<LastPublicationsViwe />}
           />
         </Route>
+        <Route path="/company" element={<Frontend />}>
+          <Route index element={<AboutUs />} />
+          <Route path="About" element={<AboutUs />} />
+          <Route path="OurTeam" element={<OurTerms />} />
+          <Route path="Partners" element={<Partners />} />
+          <Route path="Carrers" element={<Careers />} />
+        </Route>
+
+        <Route path="/products" element={<Frontend />}>
+          <Route index element={<OpenbravoERP />} />
+          <Route path="OpenbravoERP" element={<OpenbravoERP />} />
+          <Route path="Pcms" element={<Pcms />} />
+        </Route>
+
+        <Route path="/services" element={<Frontend />}>
+          <Route index element={<Software />} />
+          <Route path="Software development" element={<Software />} />
+          <Route path="E Business & IT Consulting" element={<EBusness />} />
+          <Route path="GIS Techology & Property Valuation" element={<Gis />} />
+          {/* <Route path="/ok" element={<Coustom />} /> */}
+        </Route>
         {/* Backend */}
 
-        <Route
-          path="/HomeB"
-          element={
-            isAuthenticated ? (
-              <Backend setAuth={setAuth} />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        >
-          <Route index element={<HomeB setAuth={setAuth} />} />
-          <Route
-            path="PublicationB"
-            element={
-              isAuthenticated ? (
-                <PublicationB setAuth={setAuth} />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
-          <Route
-            path="register"
-            element={
-              isAuthenticated ? (
-                <Register setAuth={setAuth} />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
-          <Route
-            path="PartnersB"
-            element={
-              isAuthenticated ? (
-                <PartnersB setAuth={setAuth} />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
-          <Route
-            path="Resumes"
-            element={
-              isAuthenticated ? (
-                <Resumes setAuth={setAuth} />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
-          <Route
-            path="users"
-            element={
-              isAuthenticated ? (
-                <Users setAuth={setAuth} />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
-          <Route
-            path="ViewAllPublication"
-            element={
-              isAuthenticated ? (
-                <PublicationB setAuth={setAuth} />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
-          <Route
-            path="AddNewPublication"
-            element={
-              isAuthenticated ? (
-                <PublicationAdd setAuth={setAuth} />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
-          <Route
-            path="ViewAllPublication"
-            element={
-              isAuthenticated ? (
-                <PublicationB setAuth={setAuth} />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
-          <Route
-            path="usersDetails"
-            element={
-              isAuthenticated ? (
-                <Users setAuth={setAuth} />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
-          <Route
-            path="PublicationView/:id"
-            element={
-              isAuthenticated ? (
-                <PublicationView setAuth={setAuth} />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
-          <Route
-            path="usersDetails"
-            element={
-              isAuthenticated ? (
-                <Users setAuth={setAuth} />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
-          <Route path="PublicationView/:id" element={<PublicationView />} />
-          <Route
-            path="users/:id"
-            element={
-              isAuthenticated ? (
-                <ViewUsers setAuth={setAuth} />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
-          <Route
-            path="publication/:id/update"
-            element={
-              isAuthenticated ? (
-                <UpdatePage setAuth={setAuth} />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
-          <Route
-            path="users/:id/update"
-            element={
-              isAuthenticated ? (
-                <UsersUpdate setAuth={setAuth} />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
+        <Route exact path="/" element={<PrivateRouter />}>
+          <Route path="/HomeB" element={<Backend />}>
+            <Route index element={<HomeB />} />
+            <Route path="PublicationB" element={<PublicationB />} />
+            <Route path="register" element={<Register />} />
+            <Route path="PartnersB" element={<PartnersB />} />
+            <Route path="Resumes" element={<Resumes />} />
+            <Route path="users" element={<Users />} />
+            <Route path="ViewAllPublication" element={<PublicationB />} />
+            <Route path="AddNewPublication" element={<PublicationAdd />} />
+            <Route path="ViewAllPublication" element={<PublicationB />} />
+            <Route path="usersDetails" element={<Users />} />
+            <Route path="PublicationView/:id" element={<PublicationView />} />
+            <Route path="usersDetails" element={<Users />} />
+            <Route path="PublicationView/:id" element={<PublicationView />} />
+            <Route path="users/:id" element={<ViewUsers />} />
+            <Route path="publication/:id/update" element={<UpdatePage />} />
+            <Route path="users/:id/update" element={<UsersUpdate />} />
+          </Route>
         </Route>
+
         <Route path="/rest-password" element={<PasswordRest />} />
         <Route
           path="/forget_password/:id/:token"
@@ -253,16 +114,7 @@ function App(props) {
         />
 
         <Route path="*" element={<NotFound />} />
-        <Route
-          path="login"
-          element={
-            !isAuthenticated ? (
-              <LonginFrom setAuth={setAuth} />
-            ) : (
-              <Navigate to="/HomeB" />
-            )
-          }
-        />
+        <Route path="signin" element={<LonginFrom />} />
       </Routes>
     </div>
   );

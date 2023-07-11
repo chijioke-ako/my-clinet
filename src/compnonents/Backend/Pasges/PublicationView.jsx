@@ -111,15 +111,45 @@ function PublicationView() {
       <Container>
         <hr style={style} />
       </Container>
-      <Container>
-        <h5 style={{ fontWeight: 'bold' }}>Publication Title.</h5>
-
-        <h3>{publications.title}</h3>
-      </Container>
+      {/* <Container></Container> */}
       <Container>
         <Row>
-          <Col>1</Col>
-          <Col>2</Col>
+          <Col sm={8}>
+            <h5 style={{ fontWeight: 'bold' }}>Publication Title.</h5>
+
+            <h3>{publications.title}</h3>
+            <div style={{ textAlign: 'start' }}>
+              {publications.length ? (
+                <>
+                  {publications.map((item, index) => (
+                    <div key={index}>
+                      <p>{item.sub_title}</p>
+                    </div>
+                  ))}
+                </>
+              ) : (
+                <>
+                  <label>
+                    No sub-title currently available for this publication.
+                  </label>
+                </>
+              )}
+            </div>
+            <img
+              src={`http://localhost:8000/${publications.feature_image}`}
+              alt=""
+              style={{
+                height: '48rem',
+                marginTop: '14px',
+                width: '100%',
+                border: '1px solid thin #ddd',
+                marginBottom: '10px',
+                display: 'inline-block',
+                backgroundColor: '#fff',
+              }}
+            />
+          </Col>
+          <Col sm={4}>2</Col>
         </Row>
       </Container>
       <div>
@@ -129,7 +159,7 @@ function PublicationView() {
           </div>
         ))} */}
       </div>
-      {publications.body}PublicationView
+      PublicationView
     </>
   );
 }

@@ -1,11 +1,12 @@
 import { Outlet } from 'react-router-dom';
 import Footer from '../Footer';
-import Navbart from '../Navbar';
+import NavbarFont from '../Navbar';
+// import Navbart from '../Navbar';
 
 function Frontend(props) {
   return (
     <>
-      <Navbart />
+      <NavbarFont />
       <Outlet />
       <Footer />
     </>

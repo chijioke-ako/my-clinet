@@ -1,12 +1,14 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import './login.css';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaPhabricator, FaEye } from 'react-icons/fa';
 import { toast } from 'react-toastify';
-
-import Api from '../../Helper/Api';
+import { useDispatch, useSelector } from 'react-redux';
+import { signin } from '../../../action/userAction';
+import LoadingBox from '../../Helper/LoadingBox';
+import MessageBox from '../../Helper/MessageBox';
 
 const emailRegExp =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -30,33 +32,26 @@ const validationSchame = Yup.object({
     ),
 });
 
-function LonginFrom({ setAuth }) {
+function LonginFrom() {
   const [passwordEye, setPasswordEye] = useState(false);
-
-  const Navigate = useNavigate();
+  const history = useNavigate();
+  const location = useLocation();
 
   const handlePasswordClick = () => {
     setPasswordEye(!passwordEye);
   };
 
+  const redirect = location.search ? location.search.split('=')[1] : '/HomeB';
+
+  const userSiginin = useSelector((state) => state.userSignin);
+  const { userInfo, loading, error } = userSiginin;
+
+  const dispatch = useDispatch();
+
   const onSubmit = async (values) => {
     formik.resetForm();
     const { email, password } = values;
-    const res = await Api.post('/login', {
-      email,
-      password,
-    }).catch((err) => {
-      if (err && err.response) toast.error(err.response.data.data);
-      console.log('Error: ', err);
-    });
-    if (res.data) {
-      localStorage.setItem('token', res.data.token);
-
-      setAuth(true);
-
-      toast.success(res.data.status);
-    }
-    Navigate('/HomeB');
+    dispatch(signin(email, password));
   };
 
   const formik = useFormik({
@@ -68,111 +63,83 @@ function LonginFrom({ setAuth }) {
     validationSchema: validationSchame,
   });
 
+  useEffect(() => {
+    if (userInfo) {
+      history(redirect);
+      toast.success('User sign successfully 💇');
+    }
+  }, [history, userInfo, redirect]);
+
   return (
     <>
-      <div className="wrapper d-flex align-items-center justify-content-center w-100">
-        <div className="login">
-          <h1
-            className="mb-3"
-            style={{
-              textAlign: 'center',
-              color: 'GrayText',
-              fontWeight: 'bold',
-            }}
-          >
-            Login
-          </h1>
-          <form className="neeeds-validation" onSubmit={formik.handleSubmit}>
-            <div className="form-group was-validated mb-2">
-              <label htmlFor="email" className="form-label">
-                Email Address
-              </label>
-              <input
-                type="email"
-                name="email"
-                id="email"
-                placeholder="example.gmail.com"
-                className="form-control"
-                onBlur={formik.handleBlur}
-                value={formik.values.email}
-                onChange={formik.handleChange}
-                required
-              />
-              <div className="invalid-feedback">
-                <span style={{ color: 'red' }}>
-                  {formik.touched.email && formik.errors.email
-                    ? formik.errors.email
-                    : ''}
-                </span>
-              </div>
-            </div>
-            <div className="form-group was-validated mb-2">
-              <label htmlFor="password" className="form-label">
-                Password
-              </label>
-              <input
-                name="password"
-                id="password"
-                className="form-control"
-                placeholder="password"
-                type={passwordEye === false ? 'password' : 'text'}
-                onBlur={formik.handleBlur}
-                value={formik.values.password}
-                onChange={formik.handleChange}
-                required
-              />
-              <div
-                style={{
-                  marginTop: '-40px',
-                  display: 'relative',
-                  marginLeft: '13rem',
-                  fontSize: '20px',
-                }}
-              >
-                {passwordEye === false ? (
-                  <FaPhabricator onClick={handlePasswordClick} />
-                ) : (
-                  <FaEye onClick={handlePasswordClick} />
-                )}
-              </div>
-
-              <div style={{ marginTop: '1rem' }}>
-                <span style={{ color: 'red' }}>
-                  {formik.touched.password && formik.errors.password
-                    ? formik.errors.password
-                    : ''}
-                </span>
-              </div>
-            </div>
-
-            <div className="form-group form-check mb-2">
-              <input
-                type="checkbox"
-                name="checkbox"
-                id="checkbox"
-                className="form-check-input"
-              />
-              <label htmlFor="check" className="form-check-label">
-                Remember me
-              </label>
-            </div>
-            <button
-              className="btn btn-primary block w-100 mt-2"
-              type="submit"
-              disabled={!formik.isValid}
-            >
-              SIGN IN
-            </button>
-          </form>
-
-          <div className="form-group mb-2">
-            <label htmlFor="password" className="form-label">
-              Forget password <Link>Click here</Link>
-            </label>
+      <div>
+        <form className="form" onSubmit={formik.handleSubmit}>
+          <div>
+            <h1>Sign In</h1>
           </div>
-        </div>
+          {loading && <LoadingBox></LoadingBox>}
+          {error && <MessageBox variant="danger">{error}</MessageBox>}
+          <div>
+            <label htmlFor="email">Email address</label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              onBlur={formik.handleBlur}
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              required
+              placeholder="Enter Email"
+            />
+            <span style={{ color: 'red' }}>
+              {formik.touched.email && formik.errors.email
+                ? formik.errors.email
+                : ''}
+            </span>
+          </div>
+          <div>
+            <label htmlFor="password"> Password</label>
+            <input
+              placeholder="Enter password"
+              id="password"
+              required
+              type={passwordEye === false ? 'password' : 'text'}
+              onBlur={formik.handleBlur}
+              value={formik.values.password}
+              onChange={formik.handleChange}
+            />
+            <span style={{ color: 'red' }}>
+              {formik.touched.password && formik.errors.password
+                ? formik.errors.password
+                : ''}
+            </span>
+            <div
+              style={{
+                marginTop: '-44px',
+                textAlign: 'end',
+                fontSize: '20px',
+              }}
+            >
+              {passwordEye === false ? (
+                <FaPhabricator size={30} onClick={handlePasswordClick} />
+              ) : (
+                <FaEye size={30} onClick={handlePasswordClick} />
+              )}
+            </div>
+          </div>
+          <div>
+            <label />
+            <button className="primary" type="submit">
+              Sign In
+            </button>
+          </div>
+          <div>
+            <div>
+              Forget password <Link to="/rest-password">Click here</Link>
+            </div>
+          </div>
+        </form>
       </div>
-      ;
     </>
   );
 }

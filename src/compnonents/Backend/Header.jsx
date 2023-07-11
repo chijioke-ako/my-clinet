@@ -5,64 +5,32 @@ import Navbar from 'react-bootstrap/Navbar';
 
 import './Navbar.css';
 
-import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import Api from '../Helper/Api';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { Button } from 'react-bootstrap';
+import { useSelector, useDispatch } from 'react-redux';
+import { signout } from '../../action/userAction';
 
-function Header({ setAuth }) {
-  const [name, setName] = useState('');
-  const [role, setRole] = useState('');
+function Header() {
+  const navigate = useNavigate();
 
-  const logout = async (e) => {
-    e.preventDefault();
-    try {
-      localStorage.removeItem('token');
-      setAuth(false);
-      toast.success('Logout Successfully');
-    } catch (err) {
-      console.log(err.message);
-    }
+  const userSiginin = useSelector((state) => state.userSignin);
+  const { userInfo } = userSiginin;
+  console.log(userInfo.isAdmin);
+  const dispatch = useDispatch();
+
+  const signoutHandler = () => {
+    dispatch(signout());
+    navigate('/signin');
+    toast.success('siginin out successfully');
   };
 
   useEffect(() => {
-    getName();
-    getRoles();
-  }, []);
-
-  const getName = async () => {
-    try {
-      const response = await Api.get('/dashbroad', {
-        headers: {
-          authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
-
-      if (response) {
-        setName(response.data.firstname);
-      }
-    } catch (err) {
-      // not in 200 response range
-      console.log(err.message);
+    if (!userInfo) {
+      navigate('/signin');
     }
-  };
-
-  const getRoles = async () => {
-    try {
-      const response = await Api.get('/admin', {
-        headers: {
-          authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
-
-      if (response.data === true) console.log(response.data.user);
-      setRole(response.data.user);
-    } catch (err) {
-      // not in 200 response range
-      console.log(err.message);
-    }
-  };
+  }, [navigate, userInfo]);
 
   return (
     <>
@@ -108,7 +76,7 @@ function Header({ setAuth }) {
                   >
                     PARTNERS
                   </NavLink>
-                  {role === 'admin' && (
+                  {userInfo.isAdmin === 'admin' && (
                     <NavLink
                       to="/HomeB/users"
                       className={({ isActive }) =>
@@ -130,7 +98,7 @@ function Header({ setAuth }) {
                   <Button
                     type="button"
                     className="btn btn-info"
-                    onClick={(e) => logout(e)}
+                    onClick={signoutHandler}
                   >
                     Logout
                   </Button>
@@ -143,7 +111,7 @@ function Header({ setAuth }) {
                     <h6
                       style={{ color: 'rgb(64 124 185)', marginLeft: '1rem' }}
                     >
-                      welcome {name}
+                      {userInfo ? <div>welcome{userInfo.firstname}</div> : null}
                     </h6>
                   </div>
                 </Nav>

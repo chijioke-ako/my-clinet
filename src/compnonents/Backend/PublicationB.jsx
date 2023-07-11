@@ -14,6 +14,8 @@ import { useEffect, useMemo, useState } from 'react';
 import Api from '../Helper/Api';
 import { toast } from 'react-toastify';
 import moment from 'moment';
+import LoadingBox from '../Helper/LoadingBox';
+import MessageBox from '../Helper/MessageBox';
 
 const style = {
   marginTop: '20px',
@@ -22,23 +24,27 @@ const style = {
 };
 
 function PublicationB() {
+  const navigate = useNavigate();
+
   const [publication, setPublication] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const history = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const getPublication = async () => {
     try {
-      setLoading(false);
+      setLoading(true);
       const response = await Api.get('/publications');
+      setLoading(false);
       setPublication(response.data);
     } catch (err) {
       // not in 200 response range
-      toast.error(err.message);
+      setError(err.message);
+      setLoading(false);
     }
   };
 
   const handlerView = async (id) => {
-    history(`/HomeB/PublicationView/${id}`);
+    navigate(`/HomeB/PublicationView/${id}`);
   };
 
   const deleteHeader = async (id) => {
@@ -159,9 +165,7 @@ function PublicationB() {
   }, []);
 
   const handlerUpdate = async (id) => {
-    // e.stopPropagation();
-    console.log(id);
-    history(`/HomeB/publication/${id}/Update`);
+    navigate(`/HomeB/publication/${id}/Update`);
   };
 
   const { pageIndex, pageSize } = state;
@@ -226,137 +230,156 @@ function PublicationB() {
       <Container>
         <hr style={style} />
       </Container>
-
-      <Container>
+      <div>
         {loading ? (
-          <span>Loading Partners </span>
+          <Container>
+            <LoadingBox></LoadingBox>
+          </Container>
+        ) : error ? (
+          <Container>
+            <MessageBox>
+              <h4>No currently publications available !</h4>
+              {error}
+            </MessageBox>
+          </Container>
         ) : (
           <>
-            <div>
-              <div style={{ textAlign: 'end' }}>
-                <GlobalFilter
-                  filter={globalFilter}
-                  setFilter={setGlobalFilter}
-                />
-              </div>
-              <span>
-                <select
-                  value={pageSize}
-                  onChange={(e) => setPageSize(Number(e.target.value))}
-                >
-                  {[10, 25, 50].map((pageSize) => (
-                    <option key={pageSize} value={pageSize}>
-                      Show:{pageSize}
-                    </option>
-                  ))}
-                </select>
-              </span>
-            </div>
+            <Container>
+              <>
+                <div>
+                  <div style={{ textAlign: 'end' }}>
+                    <GlobalFilter
+                      filter={globalFilter}
+                      setFilter={setGlobalFilter}
+                    />
+                  </div>
+                  <span>
+                    <select
+                      value={pageSize}
+                      onChange={(e) => setPageSize(Number(e.target.value))}
+                    >
+                      {[10, 25, 50].map((pageSize) => (
+                        <option key={pageSize} value={pageSize}>
+                          Show:{pageSize}
+                        </option>
+                      ))}
+                    </select>
+                  </span>
+                </div>
 
-            <Table {...getTableProps()} style={{ border: 'solid 1px gray' }}>
-              <thead>
-                {headerGroups.map((headerGroup) => (
-                  <tr {...headerGroup.getHeaderGroupProps}>
-                    {headerGroup.headers.map((column) => (
-                      <th
-                        {...column.getHeaderProps(
-                          column.getSortByToggleProps()
-                        )}
-                        style={{
-                          border: 'solid 1px black',
-                          fontWeight: 'bold',
-                          textAlign: 'center',
-                          padding: '10px',
-                          cursor: 'pointer',
-                        }}
-                      >
-                        {column.render('Header')}
-                        {column.isSorted ? (
-                          column.isSortedDesc ? (
-                            <FaCaretDown />
-                          ) : (
-                            <FaCaretUp />
-                          )
-                        ) : (
-                          ''
-                        )}
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </thead>
-              <tbody {...getTableBodyProps()}>
-                {page.map((row) => {
-                  prepareRow(row);
-                  return (
-                    <tr {...row.getRowProps()}>
-                      {row.cells.map((cell) => {
-                        return (
-                          <td
-                            {...cell.getCellProps()}
+                <Table
+                  {...getTableProps()}
+                  style={{ border: 'solid 1px gray' }}
+                >
+                  <thead>
+                    {headerGroups.map((headerGroup) => (
+                      <tr {...headerGroup.getHeaderGroupProps}>
+                        {headerGroup.headers.map((column) => (
+                          <th
+                            {...column.getHeaderProps(
+                              column.getSortByToggleProps()
+                            )}
                             style={{
-                              padding: '10px',
-                              border: 'solid 1px gray',
+                              border: 'solid 1px black',
+                              fontWeight: 'bold',
                               textAlign: 'center',
+                              padding: '10px',
+                              cursor: 'pointer',
                             }}
                           >
-                            {cell.render('Cell')}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </Table>
+                            {column.render('Header')}
+                            {column.isSorted ? (
+                              column.isSortedDesc ? (
+                                <FaCaretDown />
+                              ) : (
+                                <FaCaretUp />
+                              )
+                            ) : (
+                              ''
+                            )}
+                          </th>
+                        ))}
+                      </tr>
+                    ))}
+                  </thead>
+                  <tbody {...getTableBodyProps()}>
+                    {page.map((row) => {
+                      prepareRow(row);
+                      return (
+                        <tr {...row.getRowProps()}>
+                          {row.cells.map((cell) => {
+                            return (
+                              <td
+                                {...cell.getCellProps()}
+                                style={{
+                                  padding: '10px',
+                                  border: 'solid 1px gray',
+                                  textAlign: 'center',
+                                }}
+                              >
+                                {cell.render('Cell')}
+                              </td>
+                            );
+                          })}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </Table>
+              </>
+
+              <div>
+                <strong>
+                  <span>
+                    {' '}
+                    page {pageIndex + 1} of {pageOptions.length}
+                  </span>{' '}
+                  <span>
+                    | Go to Page:{' '}
+                    <input
+                      type="number"
+                      className="form-control"
+                      defaultValue={pageIndex + 1}
+                      onChange={(e) => {
+                        const pageNumber = e.target.value
+                          ? Number(e.target.value) - 1
+                          : 0;
+                        gotoPage(pageNumber);
+                      }}
+                      style={{ width: '50px', marginRight: '2px' }}
+                    />
+                  </span>
+                </strong>
+
+                <Button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+                  {'<<'}
+                </Button>
+                <Button
+                  style={{}}
+                  variant="primary"
+                  onClick={() => previousPage()}
+                  disabled={!canPreviousPage}
+                >
+                  Previous
+                </Button>
+                <Button
+                  style={{ marginLeft: '1px' }}
+                  variant="primary"
+                  onClick={() => nextPage()}
+                  disabled={!canNextPage}
+                >
+                  Next
+                </Button>
+                <Button onClick={() => gotoPage(1)} disabled={!canNextPage}>
+                  {'>>'}
+                </Button>
+              </div>
+            </Container>
           </>
         )}
-        <div>
-          <strong>
-            <span>
-              {' '}
-              page {pageIndex + 1} of {pageOptions.length}
-            </span>{' '}
-            <span>
-              | Go to Page:{' '}
-              <input
-                type="number"
-                defaultValue={pageIndex + 1}
-                onChange={(e) => {
-                  const pageNumber = e.target.value
-                    ? Number(e.target.value) - 1
-                    : 0;
-                  gotoPage(pageNumber);
-                }}
-                style={{ width: '50px', marginRight: '2px' }}
-              />
-            </span>
-          </strong>
+      </div>
 
-          <Button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-            {'<<'}
-          </Button>
-          <Button
-            style={{}}
-            variant="primary"
-            onClick={() => previousPage()}
-            disabled={!canPreviousPage}
-          >
-            Previous
-          </Button>
-          <Button
-            style={{ marginLeft: '1px' }}
-            variant="primary"
-            onClick={() => nextPage()}
-            disabled={!canNextPage}
-          >
-            Next
-          </Button>
-          <Button onClick={() => gotoPage(1)} disabled={!canNextPage}>
-            {'>>'}
-          </Button>
-        </div>
-      </Container>
+      <br />
     </>
   );
 }

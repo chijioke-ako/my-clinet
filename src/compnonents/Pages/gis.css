@@ -1,0 +1,12 @@
+.gis-background {
+    background-image: url("../../assets/025.jpg");
+    height: 55vh;
+    background-repeat: no-repeat;
+}
+
+.gis-header{
+    padding: 6rem;
+    color: white;
+    width: 65%;
+    font-weight: 800;
+}

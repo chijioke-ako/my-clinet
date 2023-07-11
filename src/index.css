@@ -3,18 +3,25 @@
   padding: 0;
 }
 
-  #root{ 
-    font-family: 'ubunturegular',
-        'open_sansregular',
-        'OpenSans-Regular',
-        "Helvetica Neue",
-        Helvetica,
-        Arial,
-        sans-serif;
-      font-size: 14px;
-      line-height: 1.42857143;
-      color: #333;
-  }
 
+.loading{
+  display:  block !important;
 
+}
+
+.alert {          
+  padding: 1rem;
+  border: 0.1rem solid transparent;
+  border-radius: 0.5rem;
+}
     
+.alert-info {
+ color: #2020a0;
+ background-color: #e0e0ff;
+ margin-top: 20px;
+}
+    
+.alert-danger {
+ color: #a02020;
+ background-color: #ffe0e0e0;
+}

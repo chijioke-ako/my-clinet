@@ -1,25 +1,11 @@
-import {
-  Container,
-  Breadcrumb,
-  Row,
-  Col,
-  Button,
-  Table,
-} from 'react-bootstrap';
+import { Container, Breadcrumb, Button, Table } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 
 import AddBox from '@material-ui/icons/AddBox';
 import { useState } from 'react';
 import Api from '../../Helper/Api';
 import { useEffect } from 'react';
-import {
-  FaAngleRight,
-  FaCaretDown,
-  FaCaretUp,
-  FaEye,
-  FaPen,
-  FaTrash,
-} from 'react-icons/fa';
+import { FaCaretDown, FaCaretUp, FaEye, FaPen, FaTrash } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import {
   useGlobalFilter,
@@ -29,6 +15,8 @@ import {
 } from 'react-table';
 import { useMemo } from 'react';
 import GlobalFilter from '../../Helper/GlobalFilter';
+import LoadingBox from '../../Helper/LoadingBox';
+import MessageBox from '../../Helper/MessageBox';
 
 const style = {
   marginTop: '20px',
@@ -37,21 +25,22 @@ const style = {
 };
 
 function Users() {
+  const navigate = useNavigate();
+
   const [user, setUser] = useState([]);
 
-  const [loading, setLoading] = useState(true);
-
-  const history = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const getUsers = async () => {
     try {
-      // setLoading(true);
+      setLoading(true);
       const response = await Api.get('/users');
-      setUser(response.data);
       setLoading(false);
+      setUser(response.data);
     } catch (err) {
       // not in 200 response range
-      setUser(err.message);
+      setError(err.message);
     }
   };
 
@@ -72,6 +61,12 @@ function Users() {
       } catch (err) {
         toast.error(err);
       }
+  };
+
+  const handlerUpdate = async (id) => {
+    // e.stopPropagation();
+    console.log(id);
+    navigate(`/HomeB/users/${id}/Update`);
   };
 
   const columns = useMemo(
@@ -124,6 +119,16 @@ function Users() {
           />
         ),
       },
+      {
+        id: 'edit',
+        Header: 'Edit',
+        Cell: ({ row }) => (
+          <FaPen
+            onClick={() => handlerUpdate(row.values.id)}
+            style={{ color: 'red', cursor: 'pointer' }}
+          />
+        ),
+      },
     ]);
   };
 
@@ -155,7 +160,7 @@ function Users() {
   );
 
   const handlerView = async (id) => {
-    history(`/HomeB/users/${id}`);
+    navigate(`/HomeB/users/${id}`);
   };
 
   const { pageIndex, pageSize } = state;
@@ -221,12 +226,16 @@ function Users() {
       <Container>
         <hr style={style} />
       </Container>
-
-      <Container style={{ marginTop: '12px' }}>
+      <Container>
         {loading ? (
-          <span>Loading Partners </span>
+          <LoadingBox></LoadingBox>
+        ) : error ? (
+          <MessageBox>
+            <h>No users available !!</h>
+            {error}
+          </MessageBox>
         ) : (
-          <>
+          <Container style={{ marginTop: '12px' }}>
             <div>
               <div style={{ textAlign: 'end' }}>
                 <GlobalFilter
@@ -304,54 +313,58 @@ function Users() {
                 })}
               </tbody>
             </Table>
-          </>
-        )}
-        <div>
-          <strong>
-            <span>
-              {' '}
-              page {pageIndex + 1} of {pageOptions.length}
-            </span>{' '}
-            <span>
-              | Go to Page:{' '}
-              <input
-                type="number"
-                defaultValue={pageIndex + 1}
-                onChange={(e) => {
-                  const pageNumber = e.target.value
-                    ? Number(e.target.value) - 1
-                    : 0;
-                  gotoPage(pageNumber);
-                }}
-                style={{ width: '50px', marginRight: '2px' }}
-              />
-            </span>
-          </strong>
 
-          <Button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-            {'<<'}
-          </Button>
-          <Button
-            style={{}}
-            variant="primary"
-            onClick={() => previousPage()}
-            disabled={!canPreviousPage}
-          >
-            Previous
-          </Button>
-          <Button
-            style={{ marginLeft: '1px' }}
-            variant="primary"
-            onClick={() => nextPage()}
-            disabled={!canNextPage}
-          >
-            Next
-          </Button>
-          <Button onClick={() => gotoPage(1)} disabled={!canNextPage}>
-            {'>>'}
-          </Button>
-        </div>
+            <div>
+              <strong>
+                <span>
+                  {' '}
+                  page {pageIndex + 1} of {pageOptions.length}
+                </span>{' '}
+                <span>
+                  | Go to Page:{' '}
+                  <input
+                    type="number"
+                    className="form-control"
+                    defaultValue={pageIndex + 1}
+                    onChange={(e) => {
+                      const pageNumber = e.target.value
+                        ? Number(e.target.value) - 1
+                        : 0;
+                      gotoPage(pageNumber);
+                    }}
+                    style={{ width: '50px', marginRight: '2px' }}
+                  />
+                </span>
+              </strong>
+
+              <Button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+                {'<<'}
+              </Button>
+              <Button
+                style={{}}
+                variant="primary"
+                onClick={() => previousPage()}
+                disabled={!canPreviousPage}
+              >
+                Previous
+              </Button>
+              <Button
+                style={{ marginLeft: '1px' }}
+                variant="primary"
+                onClick={() => nextPage()}
+                disabled={!canNextPage}
+              >
+                Next
+              </Button>
+              <Button onClick={() => gotoPage(1)} disabled={!canNextPage}>
+                {'>>'}
+              </Button>
+            </div>
+          </Container>
+        )}
       </Container>
+
+      <br />
     </>
   );
 }

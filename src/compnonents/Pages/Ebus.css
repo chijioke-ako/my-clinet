@@ -1,0 +1,12 @@
+.ebus-background {
+    background-image: url("../../assets/027.jpg");
+background-repeat: no-repeat;
+    height: 59vh
+}
+
+.ebus-header {
+    padding: 6rem;
+    color: white;
+    width: 65%;
+    font-weight: 800;
+}

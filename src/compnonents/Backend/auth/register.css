@@ -31,3 +31,9 @@
  color: white;
  border-radius: 5px;
 }
+
+.primary {
+    background-color: #6969ee;
+    font-size: larger;
+    color: white;
+}

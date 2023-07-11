@@ -1,6 +1,8 @@
-import { Container, Breadcrumb, Row, Col, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Container, Breadcrumb } from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom';
 import ResumesList from './ResumesList';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 const style = {
   marginTop: '20px',
@@ -9,6 +11,15 @@ const style = {
 };
 
 function Resumes() {
+  const navigate = useNavigate();
+  const userSiginin = useSelector((state) => state.userSignin);
+  const { userInfo } = userSiginin;
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigate('/signin');
+    }
+  }, []);
   return (
     <>
       <Container

@@ -1,56 +1,17 @@
-.active-link {
+.link{
     background-color: #0066CC;
+    color: #fff;
+    font-size: 20px;
     font-weight: bold;
-    color: #ffff;
-    padding: 25px;
- 
-    font-family: 'Miriam Libre ', 'sans-serif';
-    font-size: 15px;
-    margin-top: -14px;
-    text-decoration: none;
-    margin-bottom: -7px;
+    font: 20px Miriam Libre;
 }
 
-.active-link:hover {
-    /* background-color: #0066CC; */
-    /* font-weight: bold; */
-    color: #ffff;
-    /* padding: 25px; */
-    /* height: 64px; */
-    font-family: 'Miriam Libre ', 'sans-serif';
-    font-size: 15px;
-    /* margin-top: -14px; */
-    text-decoration: none;
+.link:hover{
+   cursor: 'pointer';
+    background-color: rgb(198, 218, 238);
 }
 
- .hef{
-       color: #0066CC;
-        /* font-weight: bold; */
-        /* color: #ffff; */
-
-        padding: 25px;
-        height: 64px;
-        font-family: 'Miriam Libre ', 'sans-serif';
-        font-size: 15px;
-        margin-top: -14px;
-        text-decoration: none;
-    
-    }
-
-    .hef:hover {
-        /* height: '50px'; */
-        cursor: 'pointer';
-        background-color:rgb(198, 218, 238);    
-     }
-
- .dropdown-divider{
-    height: 1px;
-    margin: 9px 0;
-    overflow: hidden;
-    background-color: #e5e5e5;
-    }
-
-@media screen and (min-width : 993px){
+/* @media screen and (min-width : 993px){
     .dropdown:hover .dropdown-menu{
         display: block ;
     }
@@ -60,4 +21,119 @@
     .dropdown .dropdown-menu.show{
      display: none ;
    }
+} */
+
+
+
+.nav{
+    background-color: #fff;
+    border-bottom: solid 3px blue;
+    position: fixed;
+    display: flex;
+    color: blue;
+    justify-content: space-between;
+    text-align: center;
+    z-index: 100;
+    width: 100%;
+    gap: 2rem;
+    padding: 0 1rem;
+}
+
+
+.nav li:hover {
+    cursor: 'pointer';
+    background-color: rgb(198, 218, 238);
+}
+
+
+.nav a {
+    text-decoration: none;
+    height: 100%;
+    align-items: center;
+    justify-items: flex-end;
+    display: flex;
+    list-style: none;
+    text-transform: uppercase;
+}
+
+.nav-links{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    gap: 3rem;
+}
+
+.dropdown .dropdown-menu {
+    display: none;
+}
+
+.dropdown-item{
+    width: 100%;
+    padding-left: 2rem;
+}
+
+
+
+li .dropdown-item {
+    color: #383535;
+    font-size: 10px;
+    font: 13px Miriam Libre;
+}
+
+.mobile-menu-icon {
+    border: none;
+    background: none;
+    font-size: 20px;
+    display: none;
+}
+
+.band{
+    padding: 1rem;
+}
+
+@media screen and (max-width:780px) {
+  .nav-links {
+      display: none;
+   }
+
+   .mobile-menu-icon{
+    position: absolute;
+    display: block;
+    list-style: none;
+    right: 0;
+    top: 10%;
+    transition: all 0.5s ease-in-out;
+    justify-content: space-between;
+   }
+
+  .mobile-menu-icon .a {
+     position: relative;
+      margin-left: 19rem;
+      list-style: none;
+      right: 12%;
+      height: 10vh;
+      display: flex;
+      color: #031224;
+      transition: all 0.5s ease-in-out;
+  }
+.mobile-menu-icon .nav{
+    background-color: red;
+}
+ 
+ 
+
+   .dropdown:hover .dropdown-menu {
+       display: block;
+   }
+
+   .dropdown:focus .dropdown-menu {
+       display: block;
+   }
+
+   .dropdown .dropdown-menu.show {
+       display: none;
+   }
+
+
 }

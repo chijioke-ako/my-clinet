@@ -3,15 +3,20 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import '../src/./compnonents/style/glogbal.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+import store from './compnonents/Helper/store';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
+  <Provider store={store}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

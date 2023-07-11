@@ -40,8 +40,7 @@ function Proudction() {
                   </Card.Title>
                   <Card.Text
                     style={{
-                      padding: '12px',
-                      fontFamily: ['Miriam Libre ', 'sans-serif'],
+                      fontFamily: ['Miriam Libre ', 'sans-serif'].join(' , '),
                     }}
                   >
                     An online and workflow-driven electronic land management
@@ -97,7 +96,6 @@ function Proudction() {
                   </Card.Title>
                   <Card.Text
                     style={{
-                      padding: '12px',
                       fontFamily: ['Miriam Libre ', 'sans-serif'],
                     }}
                   >
@@ -130,9 +128,8 @@ function Proudction() {
             <div>
               <Card
                 style={{
-                  width: '18rem',
+                  width: '17rem',
                   textAlign: 'start',
-                  padding: '12px',
                   border: 'none',
                 }}
               >
@@ -153,8 +150,8 @@ function Proudction() {
                   </Card.Title>
                   <Card.Text
                     style={{
-                      padding: '12px',
-                      fontFamily: ['Miriam Libre ', 'sans-serif'],
+                      // padding: '12px',
+                      fontFamily: ['Miriam Libre ', 'sans-serif'].join(' , '),
                     }}
                   >
                     A workflow-driven electronic application used to automate
@@ -190,7 +187,6 @@ function Proudction() {
                   textAlign: 'center',
                   border: 'none',
                   background: 'beige',
-                  padding: '12px',
                 }}
               >
                 <Card.Img
@@ -210,8 +206,7 @@ function Proudction() {
                   </Card.Title>
                   <Card.Text
                     style={{
-                      padding: '12px',
-                      fontFamily: ['Miriam Libre ', 'sans-serif'],
+                      fontFamily: ['Miriam Libre ', 'sans-serif'].join(' , '),
                     }}
                   >
                     We are certfied experts in evaluatiing if Openbravo ERP is

@@ -1,0 +1,11 @@
+.software-background {
+ background-image: url("../../assets/024.jpg");
+ background-repeat: no-repeat;
+ height: 57vh;
+}
+
+.software{
+    color: white;
+    padding: 6rem;
+    font-weight: 800;
+}

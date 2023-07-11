@@ -1,11 +1,5 @@
 import './register.css';
-import {
-  FaPhabricator,
-  FaEye,
-  FaTimes,
-  FaInfoCircle,
-  FaCheck,
-} from 'react-icons/fa';
+import { FaPhabricator, FaEye } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -13,6 +7,7 @@ import Api from '../../Helper/Api';
 import { Link, useNavigate } from 'react-router-dom';
 import { Breadcrumb, Container } from 'react-bootstrap';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const emailRegExp =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -57,8 +52,10 @@ const style = {
   border: 0,
 };
 
-function Register({ setAuth }) {
-  const Navigate = useNavigate();
+function Register() {
+  const navigate = useNavigate();
+  const userSiginin = useSelector((state) => state.userSignin);
+  const { userInfo } = userSiginin;
 
   const [passwordEye, setPasswordEye] = useState(false);
   const [confirmPasswordEye, setConfirmPasswordEye] = useState(false);
@@ -70,6 +67,7 @@ function Register({ setAuth }) {
   const handleConfirmPasswordClick = () => {
     setConfirmPasswordEye(!confirmPasswordEye);
   };
+
   const onSubmit = async (values) => {
     formik.resetForm();
     const { firstname, lastname, email, role, password, confirmPassword } =
@@ -86,7 +84,7 @@ function Register({ setAuth }) {
       },
       {
         headers: {
-          authorization: `Bearer ${localStorage.getItem('token')}`,
+          authorization: `Bearer ${userInfo.token}`,
         },
       }
     ).catch((err) => {
@@ -97,7 +95,7 @@ function Register({ setAuth }) {
       toast.success(res.data.data);
     }
 
-    Navigate('/HomeB/users');
+    navigate('/HomeB/users');
   };
 
   const formik = useFormik({
@@ -112,6 +110,7 @@ function Register({ setAuth }) {
     onSubmit,
     validationSchema: validationSchame,
   });
+
   return (
     <>
       <Container
@@ -159,7 +158,163 @@ function Register({ setAuth }) {
         <hr style={style} />
       </Container>
       <Container>
-        <div className="wrapper d-flex align-items-center justify-content-center w-100">
+        <div>
+          <form className="form" onSubmit={formik.handleSubmit}>
+            <div>
+              <h1> Register</h1>
+            </div>
+            {/* {loading && <LoadingBox></LoadingBox>}
+            {error && <MessageBox variant="danger">{error}</MessageBox>} */}
+            <div>
+              <label htmlFor="email">First Name</label>
+              <input
+                type="text"
+                id="firstname"
+                autoComplete="off"
+                placeholder="John"
+                name="firstname"
+                onBlur={formik.handleBlur}
+                value={formik.values.firstname}
+                onChange={formik.handleChange}
+                required
+              />
+              <span style={{ color: 'red' }}>
+                {formik.touched.firstname && formik.errors.firstname
+                  ? formik.errors.firstname
+                  : ''}
+              </span>
+            </div>
+            <div>
+              <label htmlFor="email"> Last Name</label>
+              <input
+                type="text"
+                id="lastname"
+                placeholder="Enter lastname"
+                name="lastname"
+                onBlur={formik.handleBlur}
+                value={formik.values.lastname}
+                onChange={formik.handleChange}
+                required
+              />
+              <span style={{ color: 'red' }}>
+                {formik.touched.lastname && formik.errors.lastname
+                  ? formik.errors.lastname
+                  : ''}
+              </span>
+            </div>
+            <div>
+              <label htmlFor="email">Email address</label>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                onBlur={formik.handleBlur}
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                required
+                placeholder="Enter Email"
+              />
+              <span style={{ color: 'red' }}>
+                {formik.touched.email && formik.errors.email
+                  ? formik.errors.email
+                  : ''}
+              </span>
+            </div>
+            <div>
+              <label htmlFor="roles">Roles</label>
+              <input
+                type="text"
+                id="role"
+                placeholder="Users / Admin "
+                name="role"
+                onBlur={formik.handleBlur}
+                value={formik.values.role}
+                onChange={formik.handleChange}
+                required
+              />
+              <span style={{ color: 'red' }}>
+                {formik.touched.role && formik.errors.role
+                  ? formik.errors.role
+                  : ''}
+              </span>
+            </div>
+            <div>
+              <label htmlFor="password"> Password</label>
+              <input
+                placeholder="Enter password"
+                id="password"
+                required
+                type={passwordEye === false ? 'password' : 'text'}
+                onBlur={formik.handleBlur}
+                value={formik.values.password}
+                onChange={formik.handleChange}
+              />
+              <span style={{ color: 'red' }}>
+                {formik.touched.password && formik.errors.password
+                  ? formik.errors.password
+                  : ''}
+              </span>
+              <div
+                style={{
+                  marginTop: '-44px',
+                  textAlign: 'end',
+                  fontSize: '20px',
+                }}
+              >
+                {passwordEye === false ? (
+                  <FaPhabricator size={30} onClick={handlePasswordClick} />
+                ) : (
+                  <FaEye size={30} onClick={handlePasswordClick} />
+                )}
+              </div>
+            </div>
+            <div>
+              <label htmlFor="password"> confirm Password</label>
+              <input
+                id="confirm_pwd"
+                placeholder="confirm Password"
+                type={confirmPasswordEye === false ? 'password' : 'text'}
+                name="confirmPassword"
+                onBlur={formik.handleBlur}
+                value={formik.values.confirmPassword}
+                onChange={formik.handleChange}
+                onPaste={(e) => {
+                  e.preventDefault();
+                  return false;
+                }}
+                required
+              />
+              <span style={{ color: 'red' }}>
+                {formik.touched.confirmPassword && formik.errors.confirmPassword
+                  ? formik.errors.confirmPassword
+                  : ''}
+              </span>
+              <div
+                style={{
+                  marginTop: '-44px',
+                  textAlign: 'end',
+                  fontSize: '20px',
+                }}
+              >
+                {confirmPasswordEye === false ? (
+                  <FaPhabricator
+                    size={30}
+                    onClick={handleConfirmPasswordClick}
+                  />
+                ) : (
+                  <FaEye size={30} onClick={handleConfirmPasswordClick} />
+                )}
+              </div>
+            </div>
+            <div>
+              <label />
+              <button className="primary" type="submit">
+                Register
+              </button>
+            </div>
+          </form>
+        </div>
+        {/* <div className="wrapper d-flex align-items-center justify-content-center w-100">
           <div className="login">
             <h1
               className="mb-1"
@@ -183,9 +338,9 @@ function Register({ setAuth }) {
                 <input
                   type="text"
                   id="firstname"
-                  autoComplete="off"
+                 
                   placeholder="John"
-                  className="form-control"
+                
                   name="firstname"
                   onBlur={formik.handleBlur}
                   value={formik.values.firstname}
@@ -210,7 +365,7 @@ function Register({ setAuth }) {
                 <input
                   type="text"
                   id="lastname"
-                  autoComplete="off"
+                 
                   placeholder="SunName"
                   className="form-control"
                   name="lastname"
@@ -237,7 +392,7 @@ function Register({ setAuth }) {
                   type="email"
                   name="email"
                   id="email"
-                  autoComplete="off"
+                 
                   placeholder="email@gmail.com"
                   className="form-control"
                   onBlur={formik.handleBlur}
@@ -371,7 +526,7 @@ function Register({ setAuth }) {
               </button>
             </form>
           </div>
-        </div>
+        </div> */}
       </Container>
     </>
   );

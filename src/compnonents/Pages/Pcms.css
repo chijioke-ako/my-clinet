@@ -1,0 +1,65 @@
+.pcms-backgrond {
+    bottom: 0%;
+    left: 0%;
+    width: 100%;
+    overflow: hidden;
+    background: rgb(151, 150, 150);
+    margin-top: -1rem;
+    font-family:  ubunturegular,
+            'open_sansregular',
+            OpenSans - Regular,
+            'Helvetica Neue',
+            'Helvetica',
+            'Arial',
+            'sans - serif',
+          
+}
+
+.container-v {
+    height: 346px;
+    bottom: 0;
+    z-index: 0;
+    padding: 0 0 0 0px;
+    position: relative;
+    z-index: 0;
+}
+
+.cover-text-pcms {
+    position: absolute;
+    top: 15%;
+    left: 20%;
+    text-align: left;
+    color: #fff;
+    padding-right: 50px;
+    padding-bottom: 20px;
+}
+
+.cover-h3-pcms {
+    font-weight: bold;
+    padding: 20px 10px 0px;
+    font-size: 42px;
+
+    line-height: 1;
+}
+
+.cover-p-pcms {
+    padding-left: 10px;
+    font-size: 14px;
+    margin: 9px 0 10px;
+    width: 67%;
+}
+
+.backgroundPcms {
+    background: url("../../assets/048.jpg") no-repeat;
+    height: 300px;
+}
+
+.backgroundPcmsa {
+    background: url("../../assets/035.jpg") no-repeat;
+    height: 300px;
+}
+.pmcs-header{
+    margin-top: -50rem;
+   padding-left: 22rem;
+   color: white;
+}

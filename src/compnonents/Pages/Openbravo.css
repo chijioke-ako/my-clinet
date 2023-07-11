@@ -1,0 +1,31 @@
+.openbravo-backgrond {
+    bottom: 0%;
+    left: 0%;
+    width: 100%;
+    overflow: hidden;
+    background: rgb(151, 150, 150);
+    margin-top: -1rem;
+}
+
+.container-v {
+    height: 346px;
+    bottom: 0;
+    z-index: 0;
+    padding: 0 0 0 0px;
+    position: relative;
+    z-index: 0;
+}
+
+.backgroundOpen {
+    background: url("../../assets/031.jpg") no-repeat;
+    height: 300px;
+}
+
+.backgroundOpenS {
+     background: url("../../assets/032.jpg") no-repeat; 
+    height: 300px;
+}
+
+
+/**
+------------------------------------------------- */

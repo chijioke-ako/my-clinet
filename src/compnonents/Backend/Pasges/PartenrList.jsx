@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Container, Row, Col, Button, Form, Table } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
 import Api from '../../Helper/Api';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -16,6 +15,8 @@ import { FaCaretDown, FaCaretUp, FaTrash } from 'react-icons/fa';
 import GlobalFilter from '../../Helper/GlobalFilter';
 import parse from 'html-react-parser';
 import { format } from 'react-string-format';
+import LoadingBox from '../../Helper/LoadingBox';
+import MessageBox from '../../Helper/MessageBox';
 
 const SUPPORTED_FORMATS = ['image/jpg', 'image/jpeg', 'image/png'];
 
@@ -50,7 +51,8 @@ const config = {
 
 function PartenrList({ initialValue }) {
   const [partner, setPartner] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const [profile, setProfile] = useState(initialValue ?? '');
 
   const getPartners = async () => {
@@ -61,7 +63,7 @@ function PartenrList({ initialValue }) {
       setLoading(false);
     } catch (err) {
       // not in 200 response range
-      setPartner(err.message);
+      setError(err.message);
     }
   };
 
@@ -296,7 +298,9 @@ function PartenrList({ initialValue }) {
 
       <Container>
         {loading ? (
-          <span>Loading Partners </span>
+          <LoadingBox></LoadingBox>
+        ) : error ? (
+          <MessageBox></MessageBox>
         ) : (
           <>
             <div>
@@ -376,54 +380,57 @@ function PartenrList({ initialValue }) {
                 })}
               </tbody>
             </Table>
+
+            <div>
+              <strong>
+                <span>
+                  {' '}
+                  page {pageIndex + 1} of {pageOptions.length}
+                </span>{' '}
+                <span>
+                  | Go to Page:{' '}
+                  <input
+                    className="form-control"
+                    type="number"
+                    defaultValue={pageIndex + 1}
+                    onChange={(e) => {
+                      const pageNumber = e.target.value
+                        ? Number(e.target.value) - 1
+                        : 0;
+                      gotoPage(pageNumber);
+                    }}
+                    style={{ width: '50px', marginRight: '2px' }}
+                  />
+                </span>
+              </strong>
+
+              <Button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+                {'<<'}
+              </Button>
+              <Button
+                style={{}}
+                variant="primary"
+                onClick={() => previousPage()}
+                disabled={!canPreviousPage}
+              >
+                Previous
+              </Button>
+              <Button
+                style={{ marginLeft: '1px' }}
+                variant="primary"
+                onClick={() => nextPage()}
+                disabled={!canNextPage}
+              >
+                Next
+              </Button>
+              <Button onClick={() => gotoPage(1)} disabled={!canNextPage}>
+                {'>>'}
+              </Button>
+            </div>
           </>
         )}
-        <div>
-          <strong>
-            <span>
-              {' '}
-              page {pageIndex + 1} of {pageOptions.length}
-            </span>{' '}
-            <span>
-              | Go to Page:{' '}
-              <input
-                type="number"
-                defaultValue={pageIndex + 1}
-                onChange={(e) => {
-                  const pageNumber = e.target.value
-                    ? Number(e.target.value) - 1
-                    : 0;
-                  gotoPage(pageNumber);
-                }}
-                style={{ width: '50px', marginRight: '2px' }}
-              />
-            </span>
-          </strong>
-
-          <Button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-            {'<<'}
-          </Button>
-          <Button
-            style={{}}
-            variant="primary"
-            onClick={() => previousPage()}
-            disabled={!canPreviousPage}
-          >
-            Previous
-          </Button>
-          <Button
-            style={{ marginLeft: '1px' }}
-            variant="primary"
-            onClick={() => nextPage()}
-            disabled={!canNextPage}
-          >
-            Next
-          </Button>
-          <Button onClick={() => gotoPage(1)} disabled={!canNextPage}>
-            {'>>'}
-          </Button>
-        </div>
       </Container>
+      <br />
     </>
   );
 }
