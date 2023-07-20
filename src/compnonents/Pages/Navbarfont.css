@@ -1,0 +1,49 @@
+/* .navbar{
+    border-bottom: solid 3px blue;
+    position: fixed;
+
+} */
+
+.navbar-nav .nav-link{
+    color: #0066CC;
+}
+
+
+.nav-item{
+    text-transform: uppercase;
+}
+
+.dropdown-item a{
+    width: 100%;
+    padding-left: 1rem;
+}
+
+
+li .dropdown-item {
+    color: #383535;
+    font: 17px Miriam Libre;
+    text-transform: lowercase;
+
+}
+
+.nav-item:hover {
+    cursor: 'pointer';
+    background-color: rgb(198, 218, 238);
+}
+
+.links{
+    background-color: #0066CC;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    font: 20px Miriam Libre;
+    text-decoration: none;
+    display: flex;
+    height: 56px;
+      
+}
+
+.links:hover {
+  cursor: 'pointer';
+  background-color: rgb(198, 218, 238);
+}

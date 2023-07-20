@@ -1,53 +1,38 @@
-import { FaBars, FaTimes } from 'react-icons/fa';
-import './Navbar.css';
+import './Navbarfont.css';
 import logo from '../../assets/001.jpg';
 import { Link, NavLink } from 'react-router-dom';
-import { useState } from 'react';
-import { BsCaretDown } from 'react-icons/bs';
 
-function Navbar() {
-  const [mobile, setMobile] = useState(true);
-
+function NavBar() {
   return (
     <>
-      {/* <nav className="navbar">
-        <img src={logo} alt="" className="logo" />
-
-        <ul className="nav-links">
-          <Link className="links-tag">
-            <li>home</li>
-          </Link>
-          <Link className="links-tag">
-            <li>home</li>
-          </Link>
-          <Link className="links-tag">
-            <li>home</li>
-          </Link>
-          <Link className="links-tag">
-            <li>home</li>
-          </Link>
-          <Link className="links-tag">
-            <li>home</li>
-          </Link>
-          <Link className="links-tag">
-            <li>home</li>
-          </Link>
-        </ul>
-      </nav> */}
-      <header>
-        <nav className="nav">
-          <NavLink href="/" className="band">
-            <img src={logo} alt="logo" />
-          </NavLink>
-
-          <ul
-            className={mobile ? 'mobile-menu-icon' : 'nav-links'}
-            onClick={() => setMobile(false)}
-          >
-            <li>
+      <nav
+        className="navbar navbar-expand-md p-0"
+        style={{
+          borderBottom: 'solid 3px blue',
+          position: 'fixed',
+          width: '100%',
+          zIndex: '100',
+          background: '#fff',
+        }}
+      >
+        <div className="container">
+          <img src={logo} alt="logo" className="navbar-brand" />
+        </div>
+        <button
+          className="navbar-toggler"
+          data-bs-toggle="collapse"
+          data-bs-target="#nav"
+          aria-controls="nav"
+          aria-label="Expand Navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="nav">
+          <ul className="navbar-nav">
+            <li className="nav-item">
               <NavLink
                 to="/"
-                className={({ isActive }) => (isActive ? 'link' : 'a')}
+                className={({ isActive }) => (isActive ? 'links' : 'nav-link')}
               >
                 home
               </NavLink>
@@ -55,19 +40,17 @@ function Navbar() {
 
             <li className="nav-item dropdown">
               <NavLink
-                className={({ isActive }) => (isActive ? 'link' : 'a')}
+                className={({ isActive }) =>
+                  isActive ? 'links' : 'nav-link dropdown-toggle'
+                }
                 to="/company"
-                id="navbarDropdown"
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
                 company
-                <span>
-                  <BsCaretDown color="blue" />
-                </span>
               </NavLink>
-              <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+              <ul class="dropdown-menu">
                 <li>
                   <Link className="dropdown-item" to="/company/About">
                     About Us
@@ -78,6 +61,7 @@ function Navbar() {
                     Our Team
                   </Link>
                 </li>
+
                 <li>
                   <Link className="dropdown-item" to="/company/Partners">
                     Partners
@@ -96,19 +80,17 @@ function Navbar() {
 
             <li className="nav-item dropdown">
               <NavLink
-                className={({ isActive }) => (isActive ? 'link' : 'a')}
+                className={({ isActive }) =>
+                  isActive ? 'links' : 'nav-link dropdown-toggle'
+                }
                 to="/products"
-                id="navbarDropdown"
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
                 products
-                <span>
-                  <BsCaretDown color="blue" />
-                </span>
               </NavLink>
-              <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+              <ul class="dropdown-menu">
                 <li>
                   <Link className="dropdown-item" to="/products/OpenbravoERP">
                     Openbravo ERP
@@ -124,20 +106,17 @@ function Navbar() {
 
             <li className="nav-item dropdown">
               <NavLink
-                className={({ isActive }) => (isActive ? 'link' : 'a')}
+                className={({ isActive }) =>
+                  isActive ? 'links' : 'nav-link dropdown-toggle'
+                }
                 to="/services"
-                // className="nav-link dropdown-toggle"
-                id="navbarDropdown"
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
                 services
-                <span>
-                  <BsCaretDown color="blue" />
-                </span>
               </NavLink>
-              <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+              <ul class="dropdown-menu">
                 <li>
                   <Link
                     className="dropdown-item"
@@ -171,33 +150,28 @@ function Navbar() {
                 </Link>
               </ul>
             </li>
-            <li>
+
+            <li className="nav-item">
               <NavLink
                 to="/Publictions"
-                className={({ isActive }) => (isActive ? 'link' : 'a')}
+                className={({ isActive }) => (isActive ? 'links' : 'nav-link')}
               >
-                PUBLICATIONS
+                Publication
               </NavLink>
             </li>
-            <li>
+            <li className="nav-item">
               <NavLink
                 to="/ContactUs"
-                className={({ isActive }) => (isActive ? 'link' : 'a')}
+                className={({ isActive }) => (isActive ? 'links' : 'nav-link')}
               >
-                CONTACT US
+                ContactUs
               </NavLink>
             </li>
           </ul>
-          <button
-            className="mobile-menu-icon"
-            onClick={() => setMobile(!mobile)}
-          >
-            {mobile ? <FaTimes /> : <FaBars />}
-          </button>
-        </nav>
-      </header>
+        </div>
+      </nav>
     </>
   );
 }
 
-export default Navbar;
+export default NavBar;

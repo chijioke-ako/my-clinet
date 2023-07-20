@@ -26,7 +26,7 @@ const Footer = () => {
                 <strong>© {year} TEQBRIDGE LIMITED.</strong>
               </p>
             </Col>
-            <Col style={{ textAlign: 'end' }}>
+            <Col style={{ textAlign: 'end', marginTop: '1rem' }}>
               <a
                 href="https://www.linkedin.com/company/teqbridge-limited"
                 target="new"

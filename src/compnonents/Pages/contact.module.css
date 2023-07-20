@@ -1,0 +1,21 @@
+.background {
+    background-image: url("../../assets/030.jpg");
+    /* background-repeat: no-repeat; */
+    background-size: cover;
+    padding: 1rem;
+    height: 50vh;
+    
+}
+
+.buttonTag{
+    display: flex;
+    gap: 2rem;
+    margin-left: 8rem;
+}
+@media (max-width: 30em) {
+  .buttonTag {
+        display: flex;
+        gap: 1rem;
+        margin-left: -2rem;
+    }
+}

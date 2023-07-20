@@ -19,7 +19,7 @@ function Publications() {
   return (
     <>
       <div className="jumbotron-banner">
-        <div className="publiction-background">
+        <div className="background">
           <div
             style={{
               textAlign: 'start',

@@ -1,4 +1,6 @@
-.publiction-background {
+.background {
     background-image: url("../../assets/028.jpg");
-    height: 41vh;
+    /* height: 41vh; */
+    background-size: cover;
+    margin-top: -1rem;
 }

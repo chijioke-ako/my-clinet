@@ -1,5 +1,5 @@
 import { Breadcrumb, Button, Col, Container, Form, Row } from 'react-bootstrap';
-import './contact.css';
+import classes from './contact.module.css';
 import Tweets from '../Helper/Tweets';
 import { Link } from 'react-router-dom';
 import ReCAPTCHA from 'react-google-recaptcha';
@@ -125,7 +125,7 @@ function Contact() {
   return (
     <>
       <div>
-        <div className="contact-background">
+        <div className={classes.background}>
           <div
             style={{
               fontWeight: 'bold',
@@ -371,33 +371,31 @@ function Contact() {
                       </Form.Group>
 
                       <Col>
-                        <Button
-                          type="button"
-                          variant="primary"
-                          style={{
-                            marginBottom: '12px',
-                            marginLeft: '10rem',
-                            width: '10%',
-                          }}
-                          onClick={() => {
-                            reset();
-                          }}
-                        >
-                          Rest
-                        </Button>
-
-                        <Button
-                          type="submit"
-                          variant="primary"
-                          disabled={!isDirty || !isValid} // here
-                          style={{
-                            marginBottom: '12px',
-                            marginLeft: '1rem',
-                            width: '10%',
-                          }}
-                        >
-                          submit
-                        </Button>
+                        <div className={classes.buttonTag}>
+                          <Button
+                            type="button"
+                            variant="primary"
+                            style={{
+                              marginBottom: '12px',
+                              marginLeft: '2rem',
+                            }}
+                            onClick={() => {
+                              reset();
+                            }}
+                          >
+                            Rest
+                          </Button>
+                          <Button
+                            type="submit"
+                            variant="primary"
+                            disabled={!isDirty || !isValid} // here
+                            style={{
+                              marginBottom: '12px',
+                            }}
+                          >
+                            submit
+                          </Button>
+                        </div>
                       </Col>
                     </Form>
                   </div>
